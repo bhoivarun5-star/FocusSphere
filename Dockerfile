@@ -4,18 +4,20 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY .tools/apache-maven-3.9.14 /app/.tools/apache-maven-3.9.14
+# Install Maven and other build dependencies
+RUN apk add --no-cache maven
+
+# Copy pom.xml
 COPY pom.xml .
 
-# Download dependencies
-RUN ./.tools/apache-maven-3.9.14/bin/mvn dependency:resolve
+# Download dependencies (this caches them in the layer)
+RUN mvn dependency:resolve
 
 # Copy source code
 COPY src ./src
 
 # Build the application
-RUN ./.tools/apache-maven-3.9.14/bin/mvn clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jre-alpine
