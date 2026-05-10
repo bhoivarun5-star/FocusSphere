@@ -15,6 +15,4 @@ services:
         value: prod
       - key: JAVA_OPTS
         value: -Xmx512m -Xms256m
-      - key: PORT
-        value: "8080"
     autoDeploy: true
