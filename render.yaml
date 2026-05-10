@@ -28,16 +28,12 @@ services:
         value: 
       - key: DB_DRIVER
         value: org.h2.Driver
-      - key: DB_PLATFORM
-        value: org.hibernate.dialect.H2Dialect
       
       # OPTIONAL: Uncomment and configure for MySQL/PostgreSQL
       # - key: DB_URL
       #   value: ${DATABASE_URL}
       # - key: DB_DRIVER
       #   value: org.postgresql.Driver
-      # - key: DB_PLATFORM
-      #   value: org.hibernate.dialect.PostgreSQL10Dialect
       
       # Admin Configuration (CHANGE THESE!)
       - key: ADMIN_NAME

@@ -17,7 +17,6 @@ DB_URL=jdbc:h2:file:/tmp/focussphere_prod;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
 DB_USERNAME=sa
 DB_PASSWORD=
 DB_DRIVER=org.h2.Driver
-DB_PLATFORM=org.hibernate.dialect.H2Dialect
 
 # --- OPTION B: PostgreSQL (Recommended for Production) ---
 # Uncomment these lines and comment out the H2 ones above
@@ -26,7 +25,6 @@ DB_PLATFORM=org.hibernate.dialect.H2Dialect
 # DB_USERNAME=postgres
 # DB_PASSWORD=your_secure_password
 # DB_DRIVER=org.postgresql.Driver
-# DB_PLATFORM=org.hibernate.dialect.PostgreSQL10Dialect
 
 # ============================================================================
 # ADMIN CREDENTIALS (⚠️ MUST CHANGE THESE!)

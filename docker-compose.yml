@@ -15,7 +15,6 @@ services:
       - DB_USERNAME=sa
       - DB_PASSWORD=
       - DB_DRIVER=org.h2.Driver
-      - DB_PLATFORM=org.hibernate.dialect.H2Dialect
       - ADMIN_NAME=System Admin
       - ADMIN_EMAIL=admin@focussphere.com
       - ADMIN_PHONE=9999999999
