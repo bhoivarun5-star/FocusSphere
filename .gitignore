@@ -35,11 +35,13 @@ Thumbs.db
 .data/
 *.db
 *.mv.db
+*.h2.db
 
 # Environment files
 .env
 .env.local
 .env.*.local
+.env.production
 
 # Logs
 *.log
@@ -48,6 +50,39 @@ logs/
 # Node (if any)
 node_modules/
 npm-debug.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Build artifacts
+*.jar
+*.war
+dist/
+build/
+
+# IDE-specific
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# OS temporary files
+.AppleDouble
+.LSOverride
+
+# Temporary application logs
+application*.log
+app.log
+
+# H2 Database files
+*.mv.db
+*.trace.db
 yarn-error.log
 
 # IntelliJ

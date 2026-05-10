@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  focussphere:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: focussphere-app
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SPRING_PROFILES_ACTIVE=render
+      - DB_URL=jdbc:h2:file:/data/focussphere_prod;MODE=MySQL
+      - DB_USERNAME=sa
+      - DB_PASSWORD=
+      - DB_DRIVER=org.h2.Driver
+      - DB_PLATFORM=org.hibernate.dialect.H2Dialect
+      - ADMIN_NAME=System Admin
+      - ADMIN_EMAIL=admin@focussphere.com
+      - ADMIN_PHONE=9999999999
+      - ADMIN_ROLL_NO=ADMIN001
+      - ADMIN_PASSWORD=ChangeThis@123
+      - JAVA_OPTS=-Xms512m -Xmx1024m
+    volumes:
+      # Persist H2 database across container restarts
+      - focussphere-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  focussphere-data:
+    driver: local
+
+# Usage:
+# docker-compose up --build          # Build and run
+# docker-compose up                  # Run existing image
+# docker-compose down                # Stop and remove
+# docker-compose logs -f             # View logs

@@ -1,0 +1,102 @@
+# FocusSphere Render Environment Variables Template
+# Copy and paste these into Render Dashboard: Settings > Environment Variables
+
+# ============================================================================
+# REQUIRED - Server Configuration
+# ============================================================================
+PORT=8080
+SPRING_PROFILES_ACTIVE=render
+
+# ============================================================================
+# DATABASE CONFIGURATION
+# Choose ONE option and use the corresponding settings below
+# ============================================================================
+
+# --- OPTION A: H2 (Embedded Database - Default) ---
+DB_URL=jdbc:h2:file:/tmp/focussphere_prod;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
+DB_USERNAME=sa
+DB_PASSWORD=
+DB_DRIVER=org.h2.Driver
+DB_PLATFORM=org.hibernate.dialect.H2Dialect
+
+# --- OPTION B: PostgreSQL (Recommended for Production) ---
+# Uncomment these lines and comment out the H2 ones above
+# First, create a PostgreSQL database on Render
+# DB_URL=postgresql://user:password@host:port/focussphere
+# DB_USERNAME=postgres
+# DB_PASSWORD=your_secure_password
+# DB_DRIVER=org.postgresql.Driver
+# DB_PLATFORM=org.hibernate.dialect.PostgreSQL10Dialect
+
+# ============================================================================
+# ADMIN CREDENTIALS (⚠️ MUST CHANGE THESE!)
+# ============================================================================
+ADMIN_NAME=System Admin
+ADMIN_EMAIL=admin@focussphere.com
+ADMIN_PHONE=9999999999
+ADMIN_ROLL_NO=ADMIN001
+ADMIN_PASSWORD=ChangeThis@123
+
+# ============================================================================
+# MAIL CONFIGURATION (Optional - leave blank if not using email)
+# ============================================================================
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-specific-password
+MAIL_SMTP_AUTH=true
+MAIL_STARTTLS_ENABLE=true
+MAIL_STARTTLS_REQUIRED=true
+
+# ============================================================================
+# JAVA/JVM CONFIGURATION
+# ============================================================================
+JAVA_OPTS=-Xms512m -Xmx1024m
+
+# ============================================================================
+# NOTES FOR SETUP ON RENDER.COM
+# ============================================================================
+#
+# 1. Go to: https://dashboard.render.com
+#
+# 2. Create a new Web Service:
+#    - Connect your GitHub repository (focussphere)
+#    - Set Runtime to "Docker"
+#    - Set Build Command: leave default (uses Dockerfile)
+#    - Set Start Command: leave default (uses Dockerfile ENTRYPOINT)
+#
+# 3. Add these environment variables:
+#    - Copy all REQUIRED variables below
+#    - Choose DATABASE CONFIGURATION (H2 or PostgreSQL)
+#    - Update ADMIN_* variables with your preferred credentials
+#    - (Optional) Add MAIL_* variables if using email features
+#
+# 4. For PostgreSQL option:
+#    - Create a PostgreSQL instance first
+#    - Get connection URL from Render
+#    - Replace DB_URL with the PostgreSQL URL
+#    - Update DB_USERNAME and DB_PASSWORD
+#
+# 5. Click "Create Web Service"
+#    - First deploy: ~5-10 minutes (builds Docker image)
+#    - Subsequent deploys: ~2-5 minutes (uses cache)
+#
+# 6. Once deployed:
+#    - Application URL: https://your-service-name.onrender.com
+#    - Admin login: admin@focussphere.com / password (set in ADMIN_PASSWORD)
+#    - Monitor logs in Render Dashboard > Logs tab
+#
+# ============================================================================
+# SECURITY CHECKLIST
+# ============================================================================
+# Before going to production:
+# [ ] Change ADMIN_PASSWORD to a strong value
+# [ ] Update ADMIN_EMAIL to your email
+# [ ] Use PostgreSQL instead of H2 (for persistent data)
+# [ ] Set MAIL_* credentials if using email features
+# [ ] Enable HTTPS (Render provides free SSL by default)
+# [ ] Configure automatic backups
+# [ ] Monitor application logs regularly
+# [ ] Set up error tracking (Sentry, New Relic, etc.)
+#
+# ============================================================================
