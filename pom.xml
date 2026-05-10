@@ -15,7 +15,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>FocusSphere</name>
     <description>FocusSphere - Virtual Attention Management System</description>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
@@ -86,7 +86,45 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.focussphere.FocusSphereApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <!-- Maven Profiles for different environments -->
+    <profiles>
+        <!-- Local Development Profile -->
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>local</spring.profiles.active>
+            </properties>
+        </profile>
+
+        <!-- Production Profile (General) -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+
+        <!-- Render.com Deployment Profile -->
+        <profile>
+            <id>render</id>
+            <properties>
+                <spring.profiles.active>render</spring.profiles.active>
+            </properties>
+            <activation>
+                <property>
+                    <name>maven.build.render</name>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
 </project>

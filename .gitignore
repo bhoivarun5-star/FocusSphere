@@ -105,3 +105,9 @@ out/
 .DS_Store
 *.sublime-project
 .history/
+
+# Local development tools and binaries
+.tools/
+*.bin
+maven-wrapper.jar
+

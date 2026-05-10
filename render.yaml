@@ -1,98 +1,61 @@
 services:
   - type: web
     name: focussphere
-    runtime: docker
-    region: ohio
-    plan: standard
+    runtime: java
+    runtimeVersion: 17
     
     # Build configuration
-    dockerfilePath: ./Dockerfile
+    buildCommand: mvn clean package -DskipTests -Prender
+    
+    # Start command - JAR file location will be in target/
+    startCommand: java -jar target/focussphere-0.0.1-SNAPSHOT.jar --spring.profiles.active=render
     
     # Environment variables
     envVars:
-      # Spring Boot Configuration
       - key: PORT
-        value: 8080
-      
-      # Spring Profile (uses application-render.properties)
+        value: 10000
       - key: SPRING_PROFILES_ACTIVE
         value: render
-      
-      # Database Configuration
-      # For H2 (default):
       - key: DB_URL
-        value: jdbc:h2:file:/tmp/focussphere_prod;MODE=MySQL
+        value: ${DB_URL}
       - key: DB_USERNAME
-        value: sa
+        value: ${DB_USERNAME}
       - key: DB_PASSWORD
-        value: 
+        value: ${DB_PASSWORD}
       - key: DB_DRIVER
-        value: org.h2.Driver
-      
-      # OPTIONAL: Uncomment and configure for MySQL/PostgreSQL
-      # - key: DB_URL
-      #   value: ${DATABASE_URL}
-      # - key: DB_DRIVER
-      #   value: org.postgresql.Driver
-      
-      # Admin Configuration (CHANGE THESE!)
+        value: ${DB_DRIVER}
+      - key: DB_POOL_SIZE
+        value: 20
       - key: ADMIN_NAME
-        value: System Admin
+        value: ${ADMIN_NAME}
       - key: ADMIN_EMAIL
-        value: admin@focussphere.com
-      - key: ADMIN_PHONE
-        value: 9999999999
-      - key: ADMIN_ROLL_NO
-        value: ADMIN001
+        value: ${ADMIN_EMAIL}
       - key: ADMIN_PASSWORD
-        value: ChangeThis@123
-      
-      # Mail Configuration (Optional - leave empty if not using)
+        value: ${ADMIN_PASSWORD}
+      - key: ADMIN_PHONE
+        value: ${ADMIN_PHONE}
+      - key: ADMIN_ROLL_NO
+        value: ${ADMIN_ROLL_NO}
       - key: MAIL_HOST
-        value: smtp.gmail.com
+        value: ${MAIL_HOST}
       - key: MAIL_PORT
-        value: 587
+        value: ${MAIL_PORT}
       - key: MAIL_USERNAME
-        value: 
+        value: ${MAIL_USERNAME}
       - key: MAIL_PASSWORD
-        value: 
-      - key: MAIL_SMTP_AUTH
-        value: "true"
-      - key: MAIL_STARTTLS_ENABLE
-        value: "true"
-      - key: MAIL_STARTTLS_REQUIRED
-        value: "true"
-      
-      # Java/JVM Configuration
-      - key: JAVA_OPTS
-        value: -Xms512m -Xmx1024m
+        value: ${MAIL_PASSWORD}
     
-    # Build command (Maven build via Dockerfile)
-    buildCommand: ""
+    # Resource configuration
+    plan: standard
     
-    # Start command (runs via Dockerfile ENTRYPOINT)
-    startCommand: ""
-    
-    # Health check endpoint
-    healthCheckPath: /actuator/health
-    healthCheckTimeout: 10
-    healthCheckStartPeriod: 60
-    
-    # Deployment settings
-    numInstances: 1
-    maxInstanceCount: 2
-    autoDeploy: true
-    
-    # Log settings
-    logging:
-      level: INFO
-      
-    # Disk and Memory
+    # Disk for persistent storage if needed
     disk:
+      name: data
+      mountPath: /tmp/data
       sizeGB: 1
     
-    # Environment files from Render dashboard
-    # Create a .env file in Render dashboard with sensitive values
-
-# Note: Sensitive values (admin passwords, mail credentials) should be set via Render Dashboard
-# Environment > Environment Variables instead of committing to this file
+    # Health check
+    healthCheckPath: /actuator/health
+    
+    # Auto-deploy on git push
+    autoDeploy: true
