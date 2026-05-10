@@ -27,8 +27,8 @@ WORKDIR /app
 # Create non-root user for security
 RUN addgroup -g 1001 appuser && adduser -D -u 1001 -G appuser appuser
 
-# Copy JAR from builder
-COPY --from=builder /app/target/focussphere-0.0.1-SNAPSHOT.jar app.jar
+# Copy WAR from builder
+COPY --from=builder /app/target/focussphere-0.0.1-SNAPSHOT.war app.war
 
 # Change ownership
 RUN chown -R appuser:appuser /app
@@ -47,4 +47,4 @@ ENV SPRING_PROFILES_ACTIVE=prod
 ENV JAVA_OPTS="-Xmx256m -Xms128m"
 
 # Run the application
-CMD ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+CMD ["sh", "-c", "java $JAVA_OPTS -jar app.war"]
