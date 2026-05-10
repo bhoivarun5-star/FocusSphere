@@ -1,9 +1,11 @@
 package com.focussphere.controller;
 
+import com.focussphere.dto.MonthlyReportData;
 import com.focussphere.model.Report;
 import com.focussphere.model.User;
 import com.focussphere.service.ReportService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -112,6 +114,36 @@ public class ReportController {
             return reportService.generateReport(sessionUser, month, year);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    /**
+     * Get comprehensive monthly report data as JSON
+     */
+    @GetMapping("/api/reports/monthly-data")
+    @ResponseBody
+    public ResponseEntity<MonthlyReportData> getMonthlyReportData(
+            @RequestParam Integer month,
+            @RequestParam Integer year,
+            HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        try {
+            if (month == null || month < 1 || month > 12) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            if (year == null || year < 2000 || year > 2100) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            MonthlyReportData reportData = reportService.getMonthlyReportData(sessionUser, month, year);
+            return ResponseEntity.ok(reportData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
         }
     }
 }
