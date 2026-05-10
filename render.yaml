@@ -72,12 +72,15 @@ services:
         value: -Xms512m -Xmx1024m
     
     # Build command (Maven build via Dockerfile)
-    buildCommand: echo "Building with Docker"
+    buildCommand: ""
     
     # Start command (runs via Dockerfile ENTRYPOINT)
-    startCommand: echo "Starting with Docker ENTRYPOINT"
+    startCommand: ""
     
     # Health check endpoint
+    healthCheckPath: /health
+    healthCheckTimeout: 10
+    healthCheckStartPeriod: 60
     healthCheckPath: /health
     
     # Deployment settings

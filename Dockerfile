@@ -37,13 +37,14 @@ USER focussphere
 # Expose port (will be overridden by PORT env var)
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8080/health || exit 1
-
 # Default to production profile, can be overridden via SPRING_PROFILES_ACTIVE
 ENV SPRING_PROFILES_ACTIVE=render \
-    PORT=8080
+    PORT=8080 \
+    JAVA_OPTS="-Xms512m -Xmx1024m"
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Health check - increased timeout for startup
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+    CMD curl -f http://localhost:${PORT:-8080}/health || exit 1
+
+# Run the application with proper memory settings
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar app.jar"]
