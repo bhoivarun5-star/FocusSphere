@@ -2,8 +2,12 @@ services:
   - type: web
     name: focussphere
     runtime: docker
-    region: ohio
     plan: starter
+    region: ohio
+    dockerfile: ./Dockerfile
+    dockerContext: ./
+    buildCommand: docker build
+    startCommand: ""
     healthCheckPath: /h2-console
     port: 8080
     envVars:
@@ -14,5 +18,3 @@ services:
       - key: PORT
         value: "8080"
     autoDeploy: true
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./
