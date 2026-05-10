@@ -24,8 +24,8 @@ WORKDIR /app
 # Install curl for health checks
 RUN apk add --no-cache curl
 
-# Copy JAR from builder stage
-COPY --from=builder /build/target/focussphere-0.0.1-SNAPSHOT.jar ./app.jar
+# Copy WAR from builder stage
+COPY --from=builder /build/target/focussphere-0.0.1-SNAPSHOT.war ./app.war
 
 # Create non-root user for security
 RUN addgroup -g 1000 focussphere && \
@@ -44,7 +44,7 @@ ENV SPRING_PROFILES_ACTIVE=render \
 
 # Health check - increased timeout for startup
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
-    CMD curl -f http://localhost:${PORT:-8080}/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8080}/actuator/health || exit 1
 
 # Run the application with proper memory settings
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar app.war"]

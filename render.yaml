@@ -78,10 +78,9 @@ services:
     startCommand: ""
     
     # Health check endpoint
-    healthCheckPath: /health
+    healthCheckPath: /actuator/health
     healthCheckTimeout: 10
     healthCheckStartPeriod: 60
-    healthCheckPath: /health
     
     # Deployment settings
     numInstances: 1
